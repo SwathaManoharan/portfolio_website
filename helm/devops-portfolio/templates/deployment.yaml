@@ -17,6 +17,8 @@ spec:
       labels:
         app: {{ include "devops-portfolio.name" . }}
     spec:
+      imagePullSecrets:              
+        - name: dockerhub-secret
       containers:
         - name: app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
