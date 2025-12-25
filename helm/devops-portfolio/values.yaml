@@ -1,0 +1,40 @@
+replicaCount: 2
+
+image:
+  repository: swatha1711/devops-portfolio
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: devops-portfolio.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "256Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+config:
+  APP_ENV: "production"
+  APP_NAME: "devops-portfolio"
+
+secret:
+  API_KEY: "dummy-secret-key"
