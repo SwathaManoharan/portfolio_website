@@ -1,0 +1,5 @@
+# Every PR needs a review from one of these owners before it can merge.
+# Replace with your actual GitHub username(s) -- this is what turns on
+# the "required reviewer" enforcement once paired with branch protection.
+
+* @SwathaManoharan
