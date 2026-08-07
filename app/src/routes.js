@@ -1,7 +1,15 @@
 const express = require("express");
 const fs = require("fs");
+const rateLimit = require("express-rate-limit");
 const { version } = require("../package.json");
 const router = express.Router();
+
+const profileLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 // Home page
 router.get("/", (req, res) => {
@@ -27,18 +35,30 @@ router.get("/version", (req, res) => {
 });
 
 // Profile API
-router.get("/api/profile", (req, res) => {
-  let profile = {
+router.get("/api/profile", profileLimiter, (req, res) => {
+  const defaultProfile = {
     name: process.env.NAME || "Swatha M",
     role: process.env.ROLE || "DevOps Engineer",
     skills: ["Docker", "Kubernetes", "Terraform", "CI/CD"]
   };
 
-  if (fs.existsSync("/config/profile.json")) {
-    profile = JSON.parse(fs.readFileSync("/config/profile.json", "utf-8"));
-  }
-
-  res.status(200).json(profile);
+  const profilePath = "/config/profile.json";
+  fs.access(profilePath, fs.constants.R_OK, (accessErr) => {
+    if (accessErr) {
+      return res.status(200).json(defaultProfile);
+    }
+    fs.readFile(profilePath, "utf-8", (readErr, data) => {
+      if (readErr) {
+        return res.status(200).json(defaultProfile);
+      }
+      try {
+        const profile = JSON.parse(data);
+        return res.status(200).json(profile);
+      } catch {
+        return res.status(500).json({ error: "Invalid profile configuration" });
+      }
+    });
+  });
 });
 
 module.exports = router;

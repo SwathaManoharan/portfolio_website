@@ -3,7 +3,7 @@ replicaCount: 2
 image:
   repository: swatha1711/devops-portfolio
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: "0.1.0"
 
 service:
   type: ClusterIP
@@ -17,6 +17,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  tls:
+    - secretName: devops-portfolio-tls
+      hosts:
+        - devops-portfolio.local
 
 resources:
   requests:
@@ -37,4 +41,4 @@ config:
   APP_NAME: "devops-portfolio"
 
 secret:
-  API_KEY: "dummy-secret-key"
+  API_KEY: "YOUR_API_KEY_HERE"
