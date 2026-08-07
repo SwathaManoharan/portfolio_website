@@ -4,9 +4,22 @@ import { FORMSPREE_ENDPOINT } from '../config/formspree';
 
 jest.mock('framer-motion', () => {
   const React = require('react');
+  const scrubMotionProps = (props) => {
+    const {
+      whileHover,
+      whileTap,
+      initial,
+      animate,
+      transition,
+      exit,
+      ...rest
+    } = props;
+    return rest;
+  };
+
   return {
     motion: new Proxy({}, {
-      get: (_, tag) => ({ children, ...props }) => React.createElement(tag, props, children),
+      get: (_, tag) => ({ children, ...props }) => React.createElement(tag, scrubMotionProps(props), children),
     }),
     useInView: () => true,
     useReducedMotion: () => true,
