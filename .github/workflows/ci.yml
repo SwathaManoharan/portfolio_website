@@ -44,6 +44,18 @@ jobs:
           severity: CRITICAL,HIGH
           exit-code: 0
 
+      - name: Export Docker image
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: docker save swatha1711/devops-portfolio:${{ github.sha }} -o image.tar
+
+      - name: Upload Docker image artifact
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: image.tar
+          retention-days: 1
+
   publish-sign:
     runs-on: ubuntu-latest
     needs: build-test-scan
@@ -55,8 +67,13 @@ jobs:
       id-token: write   # REQUIRED for Cosign keyless signing
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Load Docker image
+        run: docker load -i image.tar
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -64,10 +81,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t swatha1711/devops-portfolio:${{ github.sha }} .
-          docker push swatha1711/devops-portfolio:${{ github.sha }}
+      - name: Push Docker image
+        run: docker push swatha1711/devops-portfolio:${{ github.sha }}
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.5.0
