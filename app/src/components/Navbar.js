@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <nav className={scrolled ? 'scrolled' : ''}>
       <div className="container nav-inner">
-        <a href="#hero" className="nav-logo">SM</a>
+        <a href="#hero" className="nav-logo">Swatha Manoharan</a>
         <ul className="nav-links">
           {links.map(l => (
             <li key={l}>

@@ -75,9 +75,10 @@ export default function Contact() {
           >
             <h3>Let's <span style={{ color: 'var(--accent2)' }}>Connect</span></h3>
             <p>
-              I'm open to DevOps, Cloud Engineering, and infrastructure roles.
-              Whether it's a full-time opportunity, consulting, or just a chat
-              about cloud tech — feel free to reach out!
+              Always happy to geek out on cloud architecture, explore a fresh
+              POC idea, or talk through a tricky infrastructure problem.
+              If you're building something interesting or want to bounce ideas
+              on DevOps, cloud, or platform engineering — let's chat!
             </p>
             <div className="contact-links">
               {links.map(l => (

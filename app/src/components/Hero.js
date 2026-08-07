@@ -22,7 +22,7 @@ export default function Hero() {
           {/* LEFT */}
           <div style={{ position: 'relative', zIndex: 1 }}>
             <motion.div {...fadeUp(0.1)} className="hero-badge">
-              <span /> Available for opportunities
+              <span /> Always up for a good tech conversation
             </motion.div>
 
             <motion.h1 {...fadeUp(0.2)} className="hero-name">
@@ -89,7 +89,7 @@ export default function Hero() {
                 animate={reduceMotion ? {} : { rotate: [0, 4, -4, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               >
-                SM
+                SW
               </motion.div>
               <div className="hero-card-name">Swatha Manoharan</div>
               <div className="hero-card-role">DevOps &amp; Cloud Engineer @ Presidio</div>
