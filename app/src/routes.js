@@ -1,7 +1,15 @@
 const express = require("express");
 const fs = require("fs");
+const rateLimit = require("express-rate-limit");
 const { version } = require("../package.json");
 const router = express.Router();
+
+const profileLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 // Home page
 router.get("/", (req, res) => {
@@ -27,7 +35,7 @@ router.get("/version", (req, res) => {
 });
 
 // Profile API
-router.get("/api/profile", (req, res) => {
+router.get("/api/profile", profileLimiter, (req, res) => {
   const defaultProfile = {
     name: process.env.NAME || "Swatha M",
     role: process.env.ROLE || "DevOps Engineer",
