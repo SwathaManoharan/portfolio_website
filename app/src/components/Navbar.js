@@ -22,7 +22,7 @@ export default function Navbar() {
         <button
           className="nav-hamburger"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen ? 'true' : 'false'}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen(o => !o)}
         >
           <span className="hamburger-bar" />
