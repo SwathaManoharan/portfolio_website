@@ -1,5 +1,6 @@
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
+import { TECH_LOGOS } from '../config/techLogos';
 
 const skillData = [
   {
@@ -50,6 +51,18 @@ export default function Skills() {
           animate={inView ? { scaleX: 1 } : {}}
           transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.2 }}
         />
+        <div className="skills-tool-ribbon" aria-hidden="true">
+          {TECH_LOGOS.map(({ key, Icon, label }) => (
+            <motion.span
+              key={key}
+              className="skills-tool-icon"
+              title={label}
+              whileHover={{ y: reduce ? 0 : -4, scale: reduce ? 1 : 1.08 }}
+            >
+              <Icon />
+            </motion.span>
+          ))}
+        </div>
 
         <div className="skills-grid">
           {skillData.map((cat, i) => (

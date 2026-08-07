@@ -1,17 +1,45 @@
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { FiMail, FiPhone, FiLinkedin, FiGithub, FiSend } from 'react-icons/fi';
+import { FORMSPREE_ENDPOINT } from '../config/formspree';
 
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const reduce = useReducedMotion();
-  const [sent, setSent] = useState(false);
+  const [submitState, setSubmitState] = useState('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    setSubmitState('submitting');
+    setSubmitMessage('');
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (response.ok) {
+        form.reset();
+        setSubmitState('success');
+        setSubmitMessage('Thanks! Your message was sent successfully.');
+        return;
+      }
+
+      const payload = await response.json().catch(() => null);
+      const errorText = payload?.errors?.[0]?.message || 'Sorry, something went wrong while sending your message. Please try again.';
+      setSubmitState('error');
+      setSubmitMessage(errorText);
+    } catch {
+      setSubmitState('error');
+      setSubmitMessage('Network error. Please check your connection and try again.');
+    }
   };
 
   const links = [
@@ -76,26 +104,35 @@ export default function Contact() {
           >
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Name</label>
-                <input type="text" placeholder="Your name" required />
+                <label htmlFor="contact-name">Name</label>
+                <input id="contact-name" name="name" type="text" placeholder="Your name" required />
               </div>
               <div className="form-group">
-                <label>Email</label>
-                <input type="email" placeholder="your@email.com" required />
+                <label htmlFor="contact-email">Email</label>
+                <input id="contact-email" name="email" type="email" placeholder="your@email.com" required />
               </div>
               <div className="form-group">
-                <label>Message</label>
-                <textarea placeholder="Tell me about the opportunity..." required />
+                <label htmlFor="contact-message">Message</label>
+                <textarea id="contact-message" name="message" placeholder="Tell me about the opportunity..." required />
               </div>
               <motion.button
                 type="submit"
                 className="btn btn-primary"
                 style={{ width: '100%', justifyContent: 'center' }}
+                disabled={submitState === 'submitting'}
                 whileHover={{ scale: reduce ? 1 : 1.02 }}
                 whileTap={{ scale: reduce ? 1 : 0.98 }}
               >
-                {sent ? '✅ Message Sent!' : <><FiSend /> Send Message</>}
+                {submitState === 'submitting'
+                  ? 'Sending...'
+                  : <><FiSend /> Message Me</>}
               </motion.button>
+              {submitState === 'success' && (
+                <p className="form-status success" role="status" aria-live="polite">{submitMessage}</p>
+              )}
+              {submitState === 'error' && (
+                <p className="form-status error" role="alert">{submitMessage}</p>
+              )}
             </form>
           </motion.div>
         </div>

@@ -7,6 +7,7 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
+import FloatingToolLogos from './components/FloatingToolLogos';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <div className="sky-blob sky-blob-3" />
         <div className="sky-blob sky-blob-4" />
       </div>
+      <FloatingToolLogos />
       <Navbar />
       <Hero />
       <About />

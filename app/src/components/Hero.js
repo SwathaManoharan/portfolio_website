@@ -2,20 +2,12 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { FiArrowDown, FiMail, FiGithub, FiLinkedin } from 'react-icons/fi';
 import { Link } from 'react-scroll';
-
-// Floating icon definitions (emoji stand-ins — lightweight, no extra deps)
-const FLOAT_ICONS = [
-  { cls: 'k8s',    label: '⎈'  },   // Kubernetes helm/wheel
-  { cls: 'aws',    label: '☁️' },
-  { cls: 'docker', label: '🐳' },
-  { cls: 'tf',     label: '🏗️' },
-  { cls: 'helm',   label: '⚙️' },
-  { cls: 'git',    label: '🔀' },
-];
+import { TECH_LOGOS } from '../config/techLogos';
 
 export default function Hero() {
   const reduceMotion = useReducedMotion();
   const pills = ['AWS', 'Kubernetes', 'Terraform', 'ArgoCD', 'Kafka', 'Docker', 'CI/CD', 'GitOps'];
+  const heroLogos = TECH_LOGOS.slice(0, 8);
 
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: reduceMotion ? 0 : 40 },
@@ -25,15 +17,6 @@ export default function Hero() {
 
   return (
     <section id="hero">
-      {/* Floating tech icons */}
-      {!reduceMotion && (
-        <div className="floating-icons" aria-hidden="true">
-          {FLOAT_ICONS.map(ic => (
-            <span key={ic.cls} className={`float-icon ${ic.cls}`}>{ic.label}</span>
-          ))}
-        </div>
-      )}
-
       <div className="container">
         <div className="hero-grid">
           {/* LEFT */}
@@ -55,7 +38,7 @@ export default function Hero() {
                     'DevOps Engineer', 2500,
                     'Cloud Architect', 2500,
                     'Kubernetes Specialist', 2500,
-                    'Infrastructure Guru', 2500,
+                    'Platform Reliability Engineer', 2500,
                   ]}
                   repeat={Infinity}
                 />
@@ -127,6 +110,19 @@ export default function Hero() {
                   <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>AWS Certified</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Solutions Architect – Associate</div>
                 </div>
+              </div>
+              <div className="hero-tool-cloud">
+                {heroLogos.map(({ key, label, Icon }) => (
+                  <motion.span
+                    key={key}
+                    className="hero-tool-chip"
+                    whileHover={{ y: reduceMotion ? 0 : -4, scale: reduceMotion ? 1 : 1.06 }}
+                    transition={{ type: 'spring', stiffness: 420, damping: 20 }}
+                  >
+                    <Icon />
+                    <span>{label}</span>
+                  </motion.span>
+                ))}
               </div>
 
               <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
