@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const { version } = require("../package.json");
 const router = express.Router();
 
 // Home page
@@ -22,7 +23,6 @@ router.get("/health", (req, res) => {
 
 // Version
 router.get("/version", (req, res) => {
-  const { version } = require("../package.json");
   res.status(200).json({ version });
 });
 
