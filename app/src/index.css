@@ -625,8 +625,8 @@ footer a { color: var(--accent); text-decoration: none; }
   .timeline-item { flex-direction: column; gap: 12px; }
   .timeline-dot { width: 40px; height: 40px; min-width: 40px; }
 
-  /* ── Skill tags overflow guard ── */
-  .skill-tags, .tech-pills, .project-tags { overflow-x: hidden; }
+  /* ── Skill tags: ensure wrapping on narrow screens ── */
+  .skill-tags, .tech-pills, .project-tags { flex-wrap: wrap; }
 
   /* ── Section padding ── */
   .section { padding: 64px 0; }
