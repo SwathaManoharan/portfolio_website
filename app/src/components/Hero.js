@@ -92,7 +92,7 @@ export default function Hero() {
                 SM
               </motion.div>
               <div className="hero-card-name">Swatha Manoharan</div>
-              <div className="hero-card-role">DevOps &amp; Cloud Engineer</div>
+              <div className="hero-card-role">DevOps &amp; Cloud Engineer @ Presidio</div>
               <div className="tech-pills">
                 {pills.map(p => (
                   <motion.span
@@ -109,6 +109,13 @@ export default function Hero() {
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>AWS Certified</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Solutions Architect – Associate</div>
+                </div>
+              </div>
+              <div className="cert-badge" style={{ marginTop: 8 }}>
+                <span className="cert-icon">⎈</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>CKA — In Progress</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Certified Kubernetes Administrator</div>
                 </div>
               </div>
               <div className="hero-tool-cloud">

@@ -3,10 +3,21 @@ import { useRef } from 'react';
 
 const jobs = [
   {
+    icon: '☁️',
+    role: 'DevOps & Cloud Engineer',
+    company: 'Presidio — Cloud Team',
+    period: 'Present',
+    bullets: [
+      'Working with Kubernetes and AWS to design and manage cloud-native infrastructure for enterprise clients.',
+      'Building AI agent proof-of-concept solutions as part of the Cloud Team\'s innovation initiatives.',
+      'Pursuing the CKA (Certified Kubernetes Administrator) certification to deepen container orchestration expertise.',
+    ]
+  },
+  {
     icon: '🌊',
     role: 'DevOps Engineer',
     company: 'BlueOcean Digital India Pvt. Ltd.',
-    period: 'Feb 2026 – Present',
+    period: 'Feb 2026 – Jul 2026',
     bullets: [
       'Architect and manage production EKS clusters hosting Apache Superset, Kafka, and internal services — deployment, auto-scaling, and rolling updates.',
       'Implemented ArgoCD for GitOps-based continuous delivery with declarative app deployments and automated environment sync.',
