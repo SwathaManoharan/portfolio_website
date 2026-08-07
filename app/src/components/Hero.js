@@ -111,13 +111,6 @@ export default function Hero() {
                   <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Solutions Architect – Associate</div>
                 </div>
               </div>
-              <div className="cert-badge" style={{ marginTop: 8 }}>
-                <span className="cert-icon">⎈</span>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>CKA — In Progress</div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>Certified Kubernetes Administrator</div>
-                </div>
-              </div>
               <div className="hero-tool-cloud">
                 {heroLogos.map(({ key, label, Icon }) => (
                   <motion.span
