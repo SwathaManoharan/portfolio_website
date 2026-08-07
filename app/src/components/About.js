@@ -38,14 +38,8 @@ export default function About() {
               <p>
                 I'm a DevOps &amp; Cloud Engineer with 2+ years of hands-on experience designing
                 and operating cloud-native infrastructure across AWS, Azure, and GCP.
-                I specialize in Kubernetes orchestration, Apache Kafka event streaming,
+                I specialize in Kubernetes orchestration, Apache Kafka event streaming,Docker
                 and GitOps workflows.
-              </p>
-              <p>
-                Currently at BlueOcean Digital, I architect production EKS clusters,
-                implement ArgoCD-driven continuous delivery, and build real-time Kafka
-                data pipelines. Previously at BootLabs Technologies, I authored reusable
-                Terraform modules that cut provisioning time by 70%.
               </p>
               <p>
                 I hold an AWS Certified Solutions Architect – Associate certification and
