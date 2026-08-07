@@ -14,15 +14,18 @@
   --text:    #1E1B4B;
   --muted:   #6B7280;
   --white:   #FFFFFF;
-  --hero-bg-start: #E9E4FB;
-  --hero-bg-end:   #DFF3EA;
+  --sky-purple: #C9B8F5;
+  --sky-blue: #AFCBEF;
+  --sky-pink: #F5C6DE;
+  --hero-bg-start: var(--sky-purple);
+  --hero-bg-end: var(--sky-pink);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(160deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+  background: linear-gradient(160deg, var(--sky-purple) 0%, var(--sky-blue) 48%, var(--sky-pink) 100%);
   background-attachment: fixed;
   color: var(--text);
   line-height: 1.6;
@@ -53,49 +56,67 @@ body {
   border-radius: 2px;
 }
 
-/* ─── BACKGROUND BLOBS ─────────────────────────────────────── */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.55;
+/* ─── GLOBAL SKY BLOBS ──────────────────────────────────────── */
+.sky-blobs {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
   z-index: 0;
-  will-change: transform;
-}
-.blob-1 {
-  width: 560px; height: 560px;
-  background: radial-gradient(circle, #C4B5FD, #A78BFA);
-  top: -160px; left: -160px;
-  animation: blobDrift1 22s ease-in-out infinite alternate;
-}
-.blob-2 {
-  width: 420px; height: 420px;
-  background: radial-gradient(circle, #6EE7B7, #34D399);
-  top: 120px; right: -120px;
-  animation: blobDrift2 28s ease-in-out infinite alternate;
-}
-.blob-3 {
-  width: 320px; height: 320px;
-  background: radial-gradient(circle, #FDE68A, #FCD34D);
-  bottom: -80px; left: 40%;
-  animation: blobDrift3 18s ease-in-out infinite alternate;
 }
 
-@keyframes blobDrift1 {
-  0%   { transform: translate(0px,  0px) scale(1);    }
-  50%  { transform: translate(40px, 30px) scale(1.06); }
-  100% { transform: translate(20px, 60px) scale(0.96); }
+#root > *:not(.sky-blobs) {
+  position: relative;
+  z-index: 1;
 }
-@keyframes blobDrift2 {
-  0%   { transform: translate(0px,   0px) scale(1);    }
-  50%  { transform: translate(-30px, 40px) scale(1.04); }
-  100% { transform: translate(-60px, 20px) scale(0.97); }
+
+.sky-blob {
+  position: absolute;
+  border-radius: 38% 62% 56% 44% / 45% 35% 65% 55%;
+  filter: blur(96px);
+  opacity: 0.28;
+  will-change: transform, border-radius;
+  animation: skyBlobFloat 30s ease-in-out infinite alternate, skyBlobMorph 20s ease-in-out infinite alternate;
 }
-@keyframes blobDrift3 {
-  0%   { transform: translate(0px, 0px)  scale(1);    }
-  50%  { transform: translate(50px,-20px) scale(1.05); }
-  100% { transform: translate(-20px,30px) scale(0.98); }
+
+.sky-blob-1 {
+  width: 620px; height: 620px;
+  top: -200px; left: -180px;
+  background: radial-gradient(circle at 30% 30%, rgba(201,184,245,0.95) 0%, rgba(201,184,245,0.35) 70%, rgba(201,184,245,0) 100%);
+  animation-delay: 0s, -4s;
+}
+
+.sky-blob-2 {
+  width: 560px; height: 560px;
+  top: 12%; right: -180px;
+  background: radial-gradient(circle at 70% 40%, rgba(175,203,239,0.95) 0%, rgba(175,203,239,0.35) 70%, rgba(175,203,239,0) 100%);
+  animation-delay: -10s, -2s;
+}
+
+.sky-blob-3 {
+  width: 540px; height: 540px;
+  bottom: -180px; left: 16%;
+  background: radial-gradient(circle at 40% 65%, rgba(245,198,222,0.95) 0%, rgba(245,198,222,0.35) 72%, rgba(245,198,222,0) 100%);
+  animation-delay: -6s, -9s;
+}
+
+.sky-blob-4 {
+  width: 520px; height: 520px;
+  bottom: -140px; right: 12%;
+  background: radial-gradient(circle at 55% 30%, rgba(201,184,245,0.8) 0%, rgba(175,203,239,0.45) 58%, rgba(245,198,222,0.28) 76%, rgba(245,198,222,0) 100%);
+  animation-delay: -14s, -12s;
+}
+
+@keyframes skyBlobFloat {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(42px, -32px, 0) scale(1.05); }
+  100% { transform: translate3d(-38px, 44px, 0) scale(0.97); }
+}
+
+@keyframes skyBlobMorph {
+  0% { border-radius: 38% 62% 56% 44% / 45% 35% 65% 55%; }
+  50% { border-radius: 62% 38% 44% 56% / 40% 58% 42% 60%; }
+  100% { border-radius: 47% 53% 61% 39% / 57% 43% 52% 48%; }
 }
 
 /* ─── NAV ───────────────────────────────────────────────────── */
@@ -130,7 +151,7 @@ nav.scrolled {
   min-height: 100vh;
   display: flex; align-items: center;
   position: relative; overflow: hidden;
-  background: linear-gradient(160deg, var(--hero-bg-start) 0%, var(--hero-bg-end) 100%);
+  background: transparent;
 }
 .hero-grid {
   display: grid; grid-template-columns: 1fr 1fr;
@@ -269,7 +290,7 @@ nav.scrolled {
 
 /* ─── ABOUT ─────────────────────────────────────────────────── */
 #about {
-  background: linear-gradient(160deg, var(--hero-bg-end) 0%, var(--bg) 100%);
+  background: transparent;
 }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 .about-text h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; color: var(--text); }
@@ -308,7 +329,7 @@ nav.scrolled {
 
 /* ─── EXPERIENCE ────────────────────────────────────────────── */
 #experience {
-  background: linear-gradient(160deg, var(--bg) 0%, var(--hero-bg-end) 100%);
+  background: transparent;
 }
 .timeline { position: relative; }
 .timeline::before {
@@ -371,7 +392,7 @@ nav.scrolled {
 
 /* ─── CERTIFICATIONS ────────────────────────────────────────── */
 #certifications {
-  background: linear-gradient(160deg, var(--hero-bg-end) 0%, var(--bg) 100%);
+  background: transparent;
 }
 .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
 .cert-card {
@@ -443,9 +464,10 @@ nav.scrolled {
 
 /* ─── FOOTER ────────────────────────────────────────────────── */
 footer {
-  background: linear-gradient(90deg, var(--hero-bg-start), var(--hero-bg-end));
+  background: rgba(255,255,255,0.72);
   border-top: 1px solid var(--border);
   padding: 32px 0; text-align: center; color: var(--muted); font-size: 0.85rem;
+  backdrop-filter: blur(6px);
 }
 footer a { color: var(--accent); text-decoration: none; }
 
@@ -464,5 +486,9 @@ footer a { color: var(--accent); text-decoration: none; }
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .sky-blob {
+    transform: none !important;
   }
 }

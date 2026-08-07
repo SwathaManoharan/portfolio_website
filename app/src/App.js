@@ -11,6 +11,12 @@ import Contact from './components/Contact';
 function App() {
   return (
     <>
+      <div className="sky-blobs" aria-hidden="true">
+        <div className="sky-blob sky-blob-1" />
+        <div className="sky-blob sky-blob-2" />
+        <div className="sky-blob sky-blob-3" />
+        <div className="sky-blob sky-blob-4" />
+      </div>
       <Navbar />
       <Hero />
       <About />

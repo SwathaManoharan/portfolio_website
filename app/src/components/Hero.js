@@ -25,11 +25,6 @@ export default function Hero() {
 
   return (
     <section id="hero">
-      {/* Background blobs */}
-      <div className="blob blob-1" />
-      <div className="blob blob-2" />
-      <div className="blob blob-3" />
-
       {/* Floating tech icons */}
       {!reduceMotion && (
         <div className="floating-icons" aria-hidden="true">
