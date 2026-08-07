@@ -1,6 +1,6 @@
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { FiMail, FiPhone, FiLinkedin, FiGithub, FiSend } from 'react-icons/fi';
+import { FiMail, FiLinkedin, FiGithub, FiSend } from 'react-icons/fi';
 import { FORMSPREE_ENDPOINT } from '../config/formspree';
 
 export default function Contact() {
@@ -44,7 +44,6 @@ export default function Contact() {
 
   const links = [
     { icon: <FiMail />, label: 'Email', value: 'swethamanoharan2001@gmail.com', href: 'mailto:swethamanoharan2001@gmail.com' },
-    { icon: <FiPhone />, label: 'Phone', value: '+91 9894223957', href: 'tel:+919894223957' },
     { icon: <FiLinkedin />, label: 'LinkedIn', value: 'linkedin.com/in/swatham', href: 'https://linkedin.com/in/swatham' },
     { icon: <FiGithub />, label: 'GitHub', value: 'github.com/swathamanoharan', href: 'https://github.com/swathamanoharan' },
   ];
