@@ -1,21 +1,43 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { FiArrowDown, FiMail, FiGithub, FiLinkedin } from 'react-icons/fi';
 import { Link } from 'react-scroll';
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay }
-});
+// Floating icon definitions (emoji stand-ins — lightweight, no extra deps)
+const FLOAT_ICONS = [
+  { cls: 'k8s',    label: '⎈'  },   // Kubernetes helm/wheel
+  { cls: 'aws',    label: '☁️' },
+  { cls: 'docker', label: '🐳' },
+  { cls: 'tf',     label: '🏗️' },
+  { cls: 'helm',   label: '⚙️' },
+  { cls: 'git',    label: '🔀' },
+];
 
 export default function Hero() {
+  const reduceMotion = useReducedMotion();
   const pills = ['AWS', 'Kubernetes', 'Terraform', 'ArgoCD', 'Kafka', 'Docker', 'CI/CD', 'GitOps'];
+
+  const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: reduceMotion ? 0 : 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : delay },
+  });
 
   return (
     <section id="hero">
-      <div className="blob" style={{ width: 600, height: 600, top: -200, left: -200, background: '#7c3aed' }} />
-      <div className="blob" style={{ width: 400, height: 400, top: 100, right: -100, background: '#06b6d4' }} />
+      {/* Background blobs */}
+      <div className="blob blob-1" />
+      <div className="blob blob-2" />
+      <div className="blob blob-3" />
+
+      {/* Floating tech icons */}
+      {!reduceMotion && (
+        <div className="floating-icons" aria-hidden="true">
+          {FLOAT_ICONS.map(ic => (
+            <span key={ic.cls} className={`float-icon ${ic.cls}`}>{ic.label}</span>
+          ))}
+        </div>
+      )}
 
       <div className="container">
         <div className="hero-grid">
@@ -30,21 +52,25 @@ export default function Hero() {
             </motion.h1>
 
             <motion.div {...fadeUp(0.3)} className="hero-role">
-              <TypeAnimation
-                sequence={[
-                  'DevOps Engineer', 2000,
-                  'Cloud Architect', 2000,
-                  'Kubernetes Specialist', 2000,
-                  'Infrastructure Guru', 2000,
-                ]}
-                repeat={Infinity}
-              />
+              {reduceMotion ? (
+                'DevOps & Cloud Engineer'
+              ) : (
+                <TypeAnimation
+                  sequence={[
+                    'DevOps Engineer', 2500,
+                    'Cloud Architect', 2500,
+                    'Kubernetes Specialist', 2500,
+                    'Infrastructure Guru', 2500,
+                  ]}
+                  repeat={Infinity}
+                />
+              )}
             </motion.div>
 
             <motion.p {...fadeUp(0.4)} className="hero-desc">
-              2+ years of hands-on experience across <strong>AWS, Azure, and GCP</strong>. 
-              Specializing in Kubernetes orchestration, Kafka streaming, Terraform IaC, 
-              and ArgoCD GitOps. Reduced provisioning time by <strong>70%</strong> and 
+              2+ years of hands-on experience across <strong>AWS, Azure, and GCP</strong>.
+              Specializing in Kubernetes orchestration, Kafka streaming, Terraform IaC,
+              and ArgoCD GitOps. Reduced provisioning time by <strong>70%</strong> and
               deployment errors by <strong>60%</strong>.
             </motion.p>
 
@@ -59,10 +85,10 @@ export default function Hero() {
 
             <motion.div {...fadeUp(0.6)} className="hero-stats">
               {[
-                { num: '2+', label: 'Years Experience' },
+                { num: '2+',  label: 'Years Experience' },
                 { num: '70%', label: 'Faster Provisioning' },
                 { num: '60%', label: 'Fewer Deploy Errors' },
-                { num: '3', label: 'Cloud Platforms' },
+                { num: '3',   label: 'Cloud Platforms' },
               ].map(s => (
                 <div key={s.label} className="stat">
                   <div className="stat-num">{s.num}</div>
@@ -75,25 +101,25 @@ export default function Hero() {
           {/* RIGHT */}
           <motion.div
             className="hero-visual"
-            initial={{ opacity: 0, x: 60 }}
+            initial={{ opacity: 0, x: reduceMotion ? 0 : 60 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.3 }}
           >
             <div className="hero-card">
               <motion.div
                 className="hero-avatar"
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
+                animate={reduceMotion ? {} : { rotate: [0, 4, -4, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               >
                 SM
               </motion.div>
               <div className="hero-card-name">Swatha Manoharan</div>
-              <div className="hero-card-role">DevOps & Cloud Engineer</div>
+              <div className="hero-card-role">DevOps &amp; Cloud Engineer</div>
               <div className="tech-pills">
                 {pills.map(p => (
                   <motion.span
                     key={p} className="pill"
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: reduceMotion ? 1 : 1.1 }}
                     transition={{ type: 'spring', stiffness: 400 }}
                   >
                     {p}
@@ -117,11 +143,11 @@ export default function Hero() {
                   <motion.a key={i} href={s.href} target="_blank" rel="noreferrer"
                     style={{
                       width: 36, height: 36, borderRadius: 8,
-                      background: 'var(--border)', display: 'flex',
+                      background: 'rgba(196,181,253,0.3)', display: 'flex',
                       alignItems: 'center', justifyContent: 'center',
-                      color: 'var(--muted)', textDecoration: 'none'
+                      color: 'var(--accent)', textDecoration: 'none',
                     }}
-                    whileHover={{ scale: 1.2, backgroundColor: 'var(--accent)', color: '#fff' }}
+                    whileHover={reduceMotion ? {} : { scale: 1.2, backgroundColor: 'var(--accent)', color: '#fff' }}
                   >
                     {s.icon}
                   </motion.a>

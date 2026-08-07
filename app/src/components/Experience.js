@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 
 const jobs = [
@@ -32,27 +31,34 @@ const jobs = [
 export default function Experience() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
 
   return (
     <section id="experience" className="section">
       <div className="container" ref={ref}>
-        <motion.h2 className="section-title"
-          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+        <motion.h2
+          className="section-title"
+          initial={{ opacity: 0, y: reduce ? 0 : 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: reduce ? 0 : 0.6 }}
         >
           Experience
         </motion.h2>
-        <motion.div className="section-line"
-          initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <motion.div
+          className="section-line"
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.2 }}
         />
 
         <div className="timeline">
           {jobs.map((job, i) => (
-            <motion.div key={job.company} className="timeline-item"
-              initial={{ opacity: 0, x: -40 }}
+            <motion.div
+              key={job.company}
+              className="timeline-item"
+              initial={{ opacity: 0, x: reduce ? 0 : -40 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 + i * 0.2 }}
+              transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.2 + i * 0.2 }}
             >
               <div className="timeline-dot">{job.icon}</div>
               <div className="timeline-content">
@@ -63,10 +69,11 @@ export default function Experience() {
                 <div className="timeline-company">{job.company}</div>
                 <ul className="timeline-bullets">
                   {job.bullets.map((b, j) => (
-                    <motion.li key={j}
+                    <motion.li
+                      key={j}
                       initial={{ opacity: 0 }}
                       animate={inView ? { opacity: 1 } : {}}
-                      transition={{ delay: 0.4 + i * 0.2 + j * 0.08 }}
+                      transition={{ delay: reduce ? 0 : 0.4 + i * 0.2 + j * 0.07 }}
                     >
                       {b}
                     </motion.li>

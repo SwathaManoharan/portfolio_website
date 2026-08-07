@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 
 const skillData = [
@@ -32,28 +31,35 @@ const skillData = [
 export default function Skills() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
 
   return (
     <section id="skills" className="section">
-      <div className="container">
-        <motion.h2 className="section-title"
-          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }} ref={ref}
+      <div className="container" ref={ref}>
+        <motion.h2
+          className="section-title"
+          initial={{ opacity: 0, y: reduce ? 0 : 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: reduce ? 0 : 0.6 }}
         >
           Technical Skills
         </motion.h2>
-        <motion.div className="section-line"
-          initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <motion.div
+          className="section-line"
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.2 }}
         />
 
         <div className="skills-grid">
           {skillData.map((cat, i) => (
-            <motion.div key={cat.name} className="skill-category"
-              initial={{ opacity: 0, y: 40 }}
+            <motion.div
+              key={cat.name}
+              className="skill-category"
+              initial={{ opacity: 0, y: reduce ? 0 : 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 * i }}
-              whileHover={{ y: -4 }}
+              transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.1 * i }}
+              whileHover={{ y: reduce ? 0 : -4 }}
             >
               <div className="skill-cat-header">
                 <span className="skill-cat-icon">{cat.icon}</span>
@@ -61,8 +67,9 @@ export default function Skills() {
               </div>
               <div className="skill-tags">
                 {cat.tags.map(t => (
-                  <motion.span key={t} className="skill-tag"
-                    whileHover={{ scale: 1.08, backgroundColor: 'rgba(6,182,212,0.2)' }}
+                  <motion.span
+                    key={t} className="skill-tag"
+                    whileHover={{ scale: reduce ? 1 : 1.08 }}
                   >
                     {t}
                   </motion.span>

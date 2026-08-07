@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
 
 const projects = [
@@ -32,28 +31,35 @@ const projects = [
 export default function Projects() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const reduce = useReducedMotion();
 
   return (
     <section id="projects" className="section">
       <div className="container" ref={ref}>
-        <motion.h2 className="section-title"
-          initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+        <motion.h2
+          className="section-title"
+          initial={{ opacity: 0, y: reduce ? 0 : 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: reduce ? 0 : 0.6 }}
         >
           Key Projects
         </motion.h2>
-        <motion.div className="section-line"
-          initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <motion.div
+          className="section-line"
+          initial={{ scaleX: 0 }}
+          animate={inView ? { scaleX: 1 } : {}}
+          transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.2 }}
         />
 
         <div className="projects-grid">
           {projects.map((p, i) => (
-            <motion.div key={p.name} className="project-card"
-              initial={{ opacity: 0, y: 40 }}
+            <motion.div
+              key={p.name}
+              className="project-card"
+              initial={{ opacity: 0, y: reduce ? 0 : 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.15 * i }}
-              whileHover={{ y: -6 }}
+              transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.12 * i }}
+              whileHover={{ y: reduce ? 0 : -6 }}
             >
               <div className="project-icon">{p.icon}</div>
               <div className="project-name">{p.name}</div>
