@@ -20,6 +20,12 @@ router.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
+// Version
+router.get("/version", (req, res) => {
+  const { version } = require("../package.json");
+  res.status(200).json({ version });
+});
+
 // Profile API
 router.get("/api/profile", (req, res) => {
   let profile = {
