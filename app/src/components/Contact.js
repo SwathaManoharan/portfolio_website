@@ -3,16 +3,35 @@ import { useRef, useState } from 'react';
 import { FiMail, FiLinkedin, FiGithub, FiSend } from 'react-icons/fi';
 import { FORMSPREE_ENDPOINT } from '../config/formspree';
 
+const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const reduce = useReducedMotion();
   const [submitState, setSubmitState] = useState('idle');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [fileError, setFileError] = useState('');
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file && file.size > MAX_FILE_SIZE_BYTES) {
+      setFileError('File is too large. Maximum allowed size is 5 MB.');
+    } else {
+      setFileError('');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
+
+    const attachment = form.elements['attachment']?.files?.[0];
+    if (attachment && attachment.size > MAX_FILE_SIZE_BYTES) {
+      setFileError('File is too large. Maximum allowed size is 5 MB.');
+      return;
+    }
+
     const formData = new FormData(form);
 
     setSubmitState('submitting');
@@ -115,11 +134,23 @@ export default function Contact() {
                 <label htmlFor="contact-message">Message</label>
                 <textarea id="contact-message" name="message" placeholder="Tell me about the opportunity..." required />
               </div>
+              <div className="form-group">
+                <label htmlFor="contact-attachment">Attachment <span style={{ fontWeight: 'normal', opacity: 0.7 }}>(optional, max 5 MB)</span></label>
+                <input
+                  id="contact-attachment"
+                  name="attachment"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+                {fileError && (
+                  <p className="form-status error" role="alert">{fileError}</p>
+                )}
+              </div>
               <motion.button
                 type="submit"
                 className="btn btn-primary"
                 style={{ width: '100%', justifyContent: 'center' }}
-                disabled={submitState === 'submitting'}
+                disabled={submitState === 'submitting' || !!fileError}
                 whileHover={{ scale: reduce ? 1 : 1.02 }}
                 whileTap={{ scale: reduce ? 1 : 0.98 }}
               >
