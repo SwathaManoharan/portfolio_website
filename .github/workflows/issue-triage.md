@@ -4,7 +4,8 @@ on:
     types: [opened]
 permissions:
   contents: read
-  issues: read
+  issues: write
+  copilot-requests: write
 safe-outputs:
   add-labels:
   add-comment:
