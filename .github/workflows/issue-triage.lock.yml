@@ -56,6 +56,8 @@ on:
       - opened
 
 permissions:
+  contents: read
+  issues: write
   copilot-requests: write
 
 concurrency:
