@@ -57,6 +57,50 @@ describe('Contact form', () => {
     expect(await screen.findByText(/message was sent successfully/i)).toBeInTheDocument();
   });
 
+  test('shows file size error when attachment exceeds 5 MB', async () => {
+    render(<Contact />);
+
+    const fileInput = screen.getByLabelText(/attachment/i);
+    const largeFile = new File(['x'], 'large.pdf', { type: 'application/pdf' });
+    Object.defineProperty(largeFile, 'size', { value: 6 * 1024 * 1024 });
+
+    fireEvent.change(fileInput, { target: { files: [largeFile] } });
+
+    expect(await screen.findByText(/file is too large/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /message me/i })).toBeDisabled();
+  });
+
+  test('shows no error when attachment is within 5 MB', () => {
+    render(<Contact />);
+
+    const fileInput = screen.getByLabelText(/attachment/i);
+    const smallFile = new File(['x'], 'small.pdf', { type: 'application/pdf' });
+    Object.defineProperty(smallFile, 'size', { value: 1024 });
+    fireEvent.change(fileInput, { target: { files: [smallFile] } });
+
+    expect(screen.queryByText(/file is too large/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /message me/i })).not.toBeDisabled();
+  });
+
+  test('does not submit when attachment is too large', async () => {
+    render(<Contact />);
+
+    fireEvent.change(screen.getByLabelText(/name/i), { target: { value: 'Swatha' } });
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'swatha@example.com' } });
+    fireEvent.change(screen.getByLabelText(/message/i), { target: { value: 'Hello' } });
+
+    const fileInput = screen.getByLabelText(/attachment/i);
+    const largeFile = new File(['x'], 'large.pdf', { type: 'application/pdf' });
+    Object.defineProperty(largeFile, 'size', { value: 6 * 1024 * 1024 });
+    fireEvent.change(fileInput, { target: { files: [largeFile] } });
+
+    fireEvent.click(screen.getByRole('button', { name: /message me/i }));
+
+    await waitFor(() => {
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
+  });
+
   test('shows error message when submit fails', async () => {
     global.fetch.mockResolvedValue({
       ok: false,
