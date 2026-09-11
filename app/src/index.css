@@ -65,7 +65,7 @@ body {
   z-index: 0;
 }
 
-#root > *:not(.sky-blobs) {
+#root > *:not(.sky-blobs):not(.tool-logo-background) {
   position: relative;
   z-index: 1;
 }

@@ -38,7 +38,7 @@ export default function About() {
               <p>
                 I'm a DevOps &amp; Cloud Engineer with 2+ years of hands-on experience designing
                 and operating cloud-native infrastructure across AWS, Azure, and GCP.
-                I specialize in Kubernetes orchestration, Apache Kafka event streaming,Docker
+                I specialize in Kubernetes orchestration, Apache Kafka event streaming, Docker
                 and GitOps workflows.
               </p>
               <p>
